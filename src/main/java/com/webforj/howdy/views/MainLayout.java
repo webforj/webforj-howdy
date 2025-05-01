@@ -57,10 +57,10 @@ public class MainLayout extends Composite<AppLayout> implements DidEnterObserver
     nav.setPlacement(TabbedPane.Placement.BOTTOM);
     nav.setAlignment(TabbedPane.Alignment.CENTER);
 
+    nav.addTab(new Tab("You", TablerIcon.create("user")));
     nav.addTab(new Tab("Dashboard", TablerIcon.create("dashboard")));
     nav.addTab(new Tab("Users", TablerIcon.create("users")));
-    nav.addTab(new Tab("Products", TablerIcon.create("box")));
-    nav.addTab(new Tab("Files", TablerIcon.create("files")));
+
 
     self.addToFooter(nav);
   }

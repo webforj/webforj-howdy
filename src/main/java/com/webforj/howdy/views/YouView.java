@@ -8,14 +8,13 @@ import com.webforj.component.layout.flexlayout.FlexLayout;
 import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
 
-@Route(value = "/products", outlet = MainLayout.class)
-@FrameTitle("Products")
-public class ProductsView extends Composite<FlexLayout> {
+@Route(value = "/you", outlet = MainLayout.class)
+@FrameTitle("You")
+public class YouView extends Composite<FlexLayout> {
   private FlexLayout self = getBoundComponent();
 
-  public ProductsView() {
+  public YouView() {
     self.setHeight("100%");
     self.setAlignment(FlexAlignment.CENTER);
-    self.add(new Explore("Products"));
   }
 }
