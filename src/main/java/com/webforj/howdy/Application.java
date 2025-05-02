@@ -11,4 +11,6 @@ import com.webforj.annotation.StyleSheet;
 @AppTheme("system")
 @AppProfile(name = "Howdy", shortName = "Howdy")
 public class Application extends App {
+
+
 }
