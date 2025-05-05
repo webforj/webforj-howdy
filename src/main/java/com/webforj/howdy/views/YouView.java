@@ -164,8 +164,6 @@ public class YouView extends Composite<FlexLayout> {
    * initialized for interaction and use.
    */
   public YouView() {
-
-    self.setHeight("100%");
     self.setMaxWidth("320px");
     self.setStyle("margin", "0 auto");
     self.setDirection(FlexDirection.COLUMN);
