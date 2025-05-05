@@ -10,7 +10,4 @@ import com.webforj.annotation.StyleSheet;
 @StyleSheet("ws://app.css")
 @AppTheme("system")
 @AppProfile(name = "Howdy", shortName = "Howdy")
-public class Application extends App {
-
-
-}
+public class Application extends App {}
