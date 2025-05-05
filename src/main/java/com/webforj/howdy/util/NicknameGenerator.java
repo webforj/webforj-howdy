@@ -7,6 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * The NicknameGenerator class provides functionality to generate unique nicknames
  * by combining random adjectives, nouns, and numeric identifiers. It ensures that
  * the generated nicknames are unique by maintaining a record of previous generations.
+ *
+ * Using a local class because I don't want to introduce a dependency on a third-party.
+ * Of course, I know there are plenty of libraries out there that do this. ;-)
  */
 public class NicknameGenerator {
 
@@ -35,9 +38,9 @@ public class NicknameGenerator {
      * The method ensures that the generated nickname has not been previously used.
      *
      * @return A unique nickname string in the format [Adjective][Noun][Number]
-     * @throws RuntimeException if unable to generate a unique nickname after 1000 attempts
+     * @throws NicknameGenerationException if unable to generate a unique nickname after 1000 attempts
      */
-    public static String generateUniqueNickname() {
+    public static String generateUniqueNickname() throws NicknameGenerationException {
         int maxAttempts = 1000;
 
         for (int i = 0; i < maxAttempts; i++) {
@@ -48,7 +51,7 @@ public class NicknameGenerator {
             }
         }
 
-        throw new RuntimeException("Nickname pool exhausted or too many collisions.");
+        throw new NicknameGenerationException("Nickname pool exhausted or too many collisions.");
     }
 
     /**
