@@ -8,6 +8,5 @@ import com.webforj.annotation.StyleSheet;
 
 @Routify(packages = "com.webforj.howdy.views")
 @StyleSheet("ws://app.css")
-// @JavaScript("ws://app.js")
 @AppProfile(name = "Howdy", shortName = "Howdy")
 public class Application extends App {}
