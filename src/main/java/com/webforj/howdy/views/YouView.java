@@ -24,23 +24,6 @@ import java.util.List;
 @FrameTitle("You")
 public class YouView extends Composite<FlexLayout> {
 
-  private static final List<String> MOODS = List.of(
-    "Happy 😊",
-    "Enthusiastic 👍",
-    "Grateful 🙏",
-    "Inspired 💡",
-    "Confident 💪",
-    "Relaxed 😌",
-    "Joyful 😄",
-    "Proud 🏆",
-    "Optimistic 🌈",
-    "Playful 😜",
-    "Loved ❤️",
-    "Excited 🎉"
-);
-
-private static final String FONT_SIZE_LARGE = "larger";
-
   /**
    * Represents the current instance of the layout bound to the view.
    *
