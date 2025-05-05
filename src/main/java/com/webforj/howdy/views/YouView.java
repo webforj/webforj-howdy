@@ -165,7 +165,7 @@ public class YouView extends Composite<FlexLayout> {
    */
   public YouView() {
     self.setMaxWidth("320px");
-    self.setStyle("margin", "0 auto");
+    self.setStyle("margin", "var(--dwc-space-m) auto");
     self.setDirection(FlexDirection.COLUMN);
 
     initializeMoodSelector();

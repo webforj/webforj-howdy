@@ -25,7 +25,3 @@ dwc-app-layout {
 .app-nav dwc-tab[active]::part(prefix) {
   color: var(--dwc-color-primary);
 }
-
-dwc-listbox::part(item) {
-  position: relative;
-}
