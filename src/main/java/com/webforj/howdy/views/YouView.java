@@ -3,6 +3,7 @@ package com.webforj.howdy.views;
 import com.webforj.Page;
 import com.webforj.component.Theme;
 import com.webforj.component.button.Button;
+import com.webforj.component.button.ButtonTheme;
 import com.webforj.component.button.event.ButtonClickEvent;
 import com.webforj.component.field.TextField;
 import com.webforj.component.layout.flexlayout.FlexDirection;
@@ -12,7 +13,6 @@ import com.webforj.environment.namespace.PrivateNamespace;
 import com.webforj.environment.namespace.exception.NamespaceLockedException;
 
 import com.webforj.component.Composite;
-import com.webforj.component.layout.flexlayout.FlexAlignment;
 import com.webforj.component.layout.flexlayout.FlexLayout;
 import com.webforj.howdy.util.NicknameGenerator;
 import com.webforj.router.annotation.FrameTitle;
@@ -122,18 +122,18 @@ public class YouView extends Composite<FlexLayout> {
    * set of predefined moods for use throughout the application.
    */
   private static final List<String> AVAILABLE_MOODS = List.of(
-    "Happy 😊",
-    "Enthusiastic 👍",
-    "Grateful 🙏",
-    "Inspired 💡",
-    "Confident 💪",
-    "Relaxed 😌",
-    "Joyful 😄",
-    "Proud 🏆",
-    "Optimistic 🌈",
-    "Playful 😜",
-    "Loved ❤️",
-    "Excited 🎉"
+    "😊 Happy",
+    "👍 Enthusiastic",
+    "🙏 Grateful",
+    "💡 Inspired",
+    "💪 Confident",
+    "😌 Relaxed",
+    "😄 Joyful",
+    "🏆 Proud",
+    "🌈 Optimistic",
+    "😜 Playful",
+    "❤️ Loved",
+    "🎉 Excited"
   );
 
   /**
@@ -167,7 +167,8 @@ public class YouView extends Composite<FlexLayout> {
   public YouView() {
 
     self.setHeight("100%");
-    self.setAlignment(FlexAlignment.CENTER);
+    self.setMaxWidth("320px");
+    self.setStyle("margin", "0 auto");
     self.setDirection(FlexDirection.COLUMN);
 
     initializeMoodSelector();
@@ -227,7 +228,7 @@ public class YouView extends Composite<FlexLayout> {
 
         Nickname.setEnabled(false);
 
-        Toast.show("You shared your mood, "+nickname,1200,Theme.SUCCESS);
+        Toast.show("You shared your mood, "+nickname,1200,Theme.SUCCESS, Toast.Placement.TOP_RIGHT);
 
       }
   }
@@ -260,8 +261,8 @@ public class YouView extends Composite<FlexLayout> {
           return false;
         }
     }
-   this.nickname = nick;
-   return true;
-  }
 
+    this.nickname = nick;
+    return true;
+  }
 }
