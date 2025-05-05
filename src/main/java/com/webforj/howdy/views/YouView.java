@@ -13,6 +13,7 @@ import com.webforj.environment.namespace.exception.NamespaceLockedException;
 
 import com.webforj.component.Composite;
 import com.webforj.component.layout.flexlayout.FlexLayout;
+import com.webforj.howdy.util.NicknameGenerationException;
 import com.webforj.howdy.util.NicknameGenerator;
 import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
@@ -65,7 +66,7 @@ public class YouView extends Composite<FlexLayout> {
    * - Serves as an interface for user nickname input.
    * - Includes a prompt text label to guide the user.
    */
-  TextField Nickname = new TextField("Your Nickname:");
+  TextField nicknameInput = new TextField("Your Nickname:");
 
   /**
    * Represents a list for selecting or displaying the user's mood.
@@ -78,7 +79,7 @@ public class YouView extends Composite<FlexLayout> {
    * express their current emotional state effectively. It can be used in combination
    * with other form elements to collect and process user input.
    */
-  ListBox MyMood = new ListBox("My Mood:");
+  ListBox myMoodSelection = new ListBox("My Mood:");
 
   /**
    * Represents a button labeled "Submit" in the context of the `YouView` class.
@@ -92,7 +93,7 @@ public class YouView extends Composite<FlexLayout> {
    * - Contains the label "Submit" for user interaction.
    * - Can be integrated with event-handling mechanisms for click actions.
    */
-  Button Submit = new Button("Submit");
+  Button submitButton = new Button("Submit");
 
   /**
    * Represents the nickname of a user retrieved from the current page's attributes.
@@ -105,7 +106,7 @@ public class YouView extends Composite<FlexLayout> {
    * - Dynamically retrieves the attribute named "nickname" from the current page.
    * - Used within the context of the view to reference or validate user-specific identifiers.
    */
-  String nickname = Page.getCurrent().getAttribute("nickname");
+  String currentUserNickname = Page.getCurrent().getAttribute("nickname");
 
   /**
    * A predefined list of mood options available for selection in the "MyMood" dropdown component.
@@ -170,17 +171,22 @@ public class YouView extends Composite<FlexLayout> {
 
     initializeMoodSelector();
 
-    self.add(Nickname, MyMood, Submit);
+    self.add(nicknameInput, myMoodSelection, submitButton);
 
-    Submit.onClick(this::onSubmit);
+    submitButton.onClick(this::onSubmit);
 
-    if (this.nickname.isBlank()) {
-      Nickname.setText(NicknameGenerator.generateUniqueNickname());
-      Nickname.focus();
+    if (this.currentUserNickname.isBlank()) {
+      try {
+        nicknameInput.setText(NicknameGenerator.generateUniqueNickname());
+      } catch (NicknameGenerationException e) {
+        //can't generate Nickname proposal, so just let the user enter one.
+        nicknameInput.setText("");
+      }
+      nicknameInput.focus();
     }
     else {
-      Nickname.setText(this.nickname);
-      Nickname.setEnabled(false);
+      nicknameInput.setText(this.currentUserNickname);
+      nicknameInput.setEnabled(false);
     }
   }
 
@@ -198,9 +204,9 @@ public class YouView extends Composite<FlexLayout> {
    * - Styles the dropdown with a font size defined in `MOOD_FONT_SIZE`.
    */
   private void initializeMoodSelector() {
-    AVAILABLE_MOODS.forEach(MyMood::add);
-    MyMood.selectIndex(0);
-    MyMood.setStyle("font-size", MOOD_FONT_SIZE);
+    AVAILABLE_MOODS.forEach(myMoodSelection::add);
+    myMoodSelection.selectIndex(0);
+    myMoodSelection.setStyle("font-size", MOOD_FONT_SIZE);
   }
 
   /**
@@ -213,19 +219,19 @@ public class YouView extends Composite<FlexLayout> {
    */
   private void onSubmit(ButtonClickEvent buttonClickEvent) {
 
-      if (!this.nickname.isBlank() || validateNickname()){
+      if (!this.currentUserNickname.isBlank() || Boolean.TRUE.equals(validateNickname())){
 
-        Page.getCurrent().setAttribute("nickname", this.nickname);
+        Page.getCurrent().setAttribute("nickname", this.currentUserNickname);
 
         try {
-          model.put(this.nickname,MyMood.getSelectedItem().getText());
+          model.put(this.currentUserNickname, myMoodSelection.getSelectedItem().getText());
         } catch (NamespaceLockedException e) {
           throw new RuntimeException(e);
         }
 
-        Nickname.setEnabled(false);
+        nicknameInput.setEnabled(false);
 
-        Toast.show("You shared your mood, "+nickname,1200,Theme.SUCCESS, Toast.Placement.TOP_RIGHT);
+        Toast.show("You shared your mood, "+ currentUserNickname,1200,Theme.SUCCESS, Toast.Placement.TOP_RIGHT);
 
       }
   }
@@ -241,25 +247,23 @@ public class YouView extends Composite<FlexLayout> {
    * @return true if the nickname passes all validation checks; false otherwise
    */
   private Boolean validateNickname() {
-    String nick = Nickname.getText();
+    String nick = nicknameInput.getText();
     if (nick.isBlank()) {
-      Nickname.setInvalidMessage("Nickname cannot be empty");
-      Nickname.setInvalid(true);
-      Nickname.focus();
+      nicknameInput.setInvalidMessage("Nickname cannot be empty");
+      nicknameInput.setInvalid(true);
+      nicknameInput.focus();
       return false;
     }
 
-    if (Nickname.isEnabled()){
-
-        if (model.contains(nick)){
-          Nickname.setInvalidMessage("Nickname already exists");
-          Nickname.setInvalid(true);
-          Nickname.focus();
+    if (nicknameInput.isEnabled() && model.contains(nick)){
+          nicknameInput.setInvalidMessage("Nickname already exists");
+          nicknameInput.setInvalid(true);
+          nicknameInput.focus();
           return false;
         }
-    }
 
-    this.nickname = nick;
+
+    this.currentUserNickname = nick;
     return true;
   }
 }

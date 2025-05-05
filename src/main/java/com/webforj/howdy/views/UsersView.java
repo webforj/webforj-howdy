@@ -2,6 +2,7 @@ package com.webforj.howdy.views;
 
 import com.webforj.component.table.Table;
 import com.webforj.data.repository.CollectionRepository;
+import com.webforj.dispatcher.ListenerRegistration;
 import com.webforj.environment.namespace.PrivateNamespace;
 import com.webforj.environment.namespace.event.NamespaceChangeEvent;
 
@@ -9,6 +10,7 @@ import com.webforj.environment.namespace.event.NamespaceChangeEvent;
 import com.webforj.component.Composite;
 import com.webforj.component.layout.flexlayout.FlexAlignment;
 import com.webforj.component.layout.flexlayout.FlexLayout;
+import com.webforj.howdy.components.NoData;
 import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
 
@@ -42,6 +44,7 @@ import java.util.List;
 @FrameTitle("Users")
 public class UsersView extends Composite<FlexLayout> {
 
+  private final ListenerRegistration<NamespaceChangeEvent> eventListenerReg;
   /**
    * Represents the current instance of the layout bound to the view.
    *
@@ -102,7 +105,8 @@ public class UsersView extends Composite<FlexLayout> {
    *   in the displayed data.
    * - Supporting the addition and updating of records for user mood tracking.
    */
-  Table <UserMood> UserTable= new Table<>();
+  Table <UserMood> userTable = new Table<>();
+  NoData noData = new NoData();
 
   /**
    * Constructs a new instance of the UsersView class.
@@ -120,12 +124,31 @@ public class UsersView extends Composite<FlexLayout> {
   public UsersView() {
     self.setHeight("100%");
     self.setAlignment(FlexAlignment.CENTER);
-    UserTable.addColumn("user", UserMood::user);
-    UserTable.addColumn("mood", UserMood::mood);
-    self.add(UserTable);
-    model.onChange(this::updateData);
+    userTable.addColumn("user", UserMood::user);
+    userTable.addColumn("mood", UserMood::mood);
+    userTable.setVisible(false);
+    self.add(userTable, noData);
+    this.eventListenerReg = model.onChange(this::updateData);
     updateData(null);
   }
+
+  /**
+   * Finalizes the destruction of the view and ensures cleanup of resources.
+   *
+   * This method is called during the teardown of the `DashboardView` component
+   * to perform custom destruction logic before the view is fully destroyed.
+   * It removes the registered event listener to prevent memory leaks or unintended
+   * event processing after the view is no longer active.
+   *
+   * The base class's `onDidDestroy` method is invoked first to ensure any generic
+   * destruction handled by the superclass is performed.
+   */
+  @Override
+  protected void onDidDestroy() {
+    super.onDidDestroy();
+    this.eventListenerReg.remove();
+  }
+
 
   /**
    * Updates the data displayed in the `UserTable` with the latest user mood information
@@ -146,7 +169,11 @@ public class UsersView extends Composite<FlexLayout> {
       .toList();
 
     CollectionRepository<UserMood> dataRepository = new CollectionRepository<>(data);
-    UserTable.setRepository(dataRepository);
+    userTable.setRepository(dataRepository);
     dataRepository.commit();
+
+    noData.setVisible(data.isEmpty());
+    userTable.setVisible(!data.isEmpty());
+
   }
 }

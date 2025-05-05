@@ -2,12 +2,14 @@ package com.webforj.howdy.views;
 
 import com.webforj.component.layout.flexlayout.FlexDirection;
 import com.webforj.component.layout.flexlayout.FlexJustifyContent;
+import com.webforj.dispatcher.ListenerRegistration;
 import com.webforj.environment.namespace.PrivateNamespace;
 import com.webforj.environment.namespace.event.NamespaceChangeEvent;
 
 import com.webforj.component.Composite;
 import com.webforj.component.layout.flexlayout.FlexAlignment;
 import com.webforj.component.layout.flexlayout.FlexLayout;
+import com.webforj.howdy.components.NoData;
 import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
 import com.webforj.router.annotation.RouteAlias;
@@ -21,31 +23,50 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Represents the dashboard view of the application.
- * This view serves as a central display for summarized mood distribution
- * data, visualized using a pie chart. The data is dynamically updated to
- * reflect the current state of the associated namespace model.
+ * The `DashboardView` class represents the main dashboard view in the application.
+ * It visualizes user mood distributions by displaying a bar chart that dynamically
+ * updates based on data from a designated namespace model.
  *
- * The `DashboardView` is a composite component built on top of a flex
- * layout that is vertically and horizontally centered. The layout leverages
- * a column-oriented direction for structuring its child components, with
- * the primary focus being the 3D pie chart.
+ * The view is constructed using a vertically-centered flex layout, which contains
+ * a `GoogleChart` component for rendering the user mood data. This data is sourced
+ * from the `PrivateNamespace` model, ensuring thread-safe interactions and accurate
+ * synchronization.
  *
- * Key Features:
- * - Dynamically rendered pie chart displaying user mood distribution.
- * - Configuration of chart properties including title and styling.
- * - Automatic binding to the namespace model for real-time updates.
- * - Display of updated data upon initialization and on changes to the model.
+ * Key features of the `DashboardView` include:
+ * - Centered layout with flexible alignment and styling.
+ * - A dynamically updating bar chart component to show user mood counts.
+ * - A data model interface via a private namespace for data storage and updates.
+ * - Automated handling of namespace changes to reflect real-time updates in the chart.
  *
- * Annotations employed include:
- * - `@Route`: Registers the class for navigation at the application's root URL.
- * - `@RouteAlias`: Allows an alternate route to access the dashboard view.
- * - `@FrameTitle`: Configures the title displayed in the application frame.
- */
+ * An instance of the `DashboardView` listens for changes in its model and updates
+ * the displayed data in the chart dynamically. This ensures that the dashboard
+ * reflects the latest metrics with minimal user interaction.
+ *
+ **/
 @Route(value = "/", outlet = MainLayout.class)
 @RouteAlias(value = "/dashboard")
 @FrameTitle("Dashboard")
 public class DashboardView extends Composite<FlexLayout> {
+
+  private final ListenerRegistration<NamespaceChangeEvent> eventListenerReg;
+
+
+  /**
+   * Finalizes the destruction of the view and ensures cleanup of resources.
+   *
+   * This method is called during the teardown of the `DashboardView` component
+   * to perform custom destruction logic before the view is fully destroyed.
+   * It removes the registered event listener to prevent memory leaks or unintended
+   * event processing after the view is no longer active.
+   *
+   * The base class's `onDidDestroy` method is invoked first to ensure any generic
+   * destruction handled by the superclass is performed.
+   */
+  @Override
+  protected void onDidDestroy() {
+    super.onDidDestroy();
+    this.eventListenerReg.remove();
+  }
 
   /**
    * Represents the current instance of the layout bound to the view.
@@ -75,6 +96,8 @@ public class DashboardView extends Composite<FlexLayout> {
    * - Serving as the central visual component of the dashboard view.
    */
   GoogleChart chart = new GoogleChart(GoogleChart.Type.BAR);
+
+  NoData noData = new NoData();
 
   /**
    * Represents a `PrivateNamespace` instance used for managing and storing
@@ -127,9 +150,11 @@ public class DashboardView extends Composite<FlexLayout> {
 
     chart.setOptions(options);
     chart.setStyle("width","80%");
-    self.add(chart);
+    chart.setStyle("display","none");
 
-    model.onChange(this::updateData);
+    self.add(noData,chart);
+
+    this.eventListenerReg = model.onChange(this::updateData);
     updateData(null);
 
   }
@@ -152,8 +177,7 @@ public class DashboardView extends Composite<FlexLayout> {
     Map<String, Integer> moodCounts = model.keySet()
       .stream()
       .map(model::get)
-      .collect(Collectors.groupingBy(
-        mood -> mood.toString(),
+      .collect(Collectors.groupingBy(Object::toString,
         Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
       ));
 
@@ -161,8 +185,9 @@ public class DashboardView extends Composite<FlexLayout> {
     moodCounts.forEach((mood, count) ->
       data.add(Arrays.asList(mood, count))
     );
+    chart.setData(data);
 
-    if (!chart.isDestroyed())
-      chart.setData(data);
+    noData.setVisible(moodCounts.isEmpty());
+    chart.setStyle("display",moodCounts.isEmpty()?"none":"block");
   }
 }
