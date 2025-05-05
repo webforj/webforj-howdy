@@ -1,6 +1,5 @@
 package com.webforj.howdy.views;
 
-import com.webforj.BrowserConsole;
 import com.webforj.Page;
 import com.webforj.component.Theme;
 import com.webforj.component.button.Button;
@@ -20,7 +19,6 @@ import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Route(value = "/you", outlet = MainLayout.class)
 @FrameTitle("You")
