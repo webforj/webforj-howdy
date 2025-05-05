@@ -2,7 +2,6 @@ package com.webforj.howdy;
 
 import com.webforj.App;
 import com.webforj.annotation.AppProfile;
-import com.webforj.annotation.AppTheme;
 import com.webforj.annotation.Routify;
 import com.webforj.annotation.StyleSheet;
 
