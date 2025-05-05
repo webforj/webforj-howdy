@@ -10,6 +10,9 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class NicknameGenerator {
 
+    // Prevent instantiation
+    private NicknameGenerator() {}
+
     /** Array of predefined adjectives used in nickname generation. */
     private static final String[] ADJECTIVES = {
         "Brave", "Happy", "Clever", "Mighty", "Witty", "Sunny", "Zesty", "Lucky", "Chill", "Swift",
