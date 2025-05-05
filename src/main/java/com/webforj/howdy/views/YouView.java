@@ -1,6 +1,5 @@
 package com.webforj.howdy.views;
 
-import com.webforj.BrowserConsole;
 import com.webforj.Page;
 import com.webforj.component.Theme;
 import com.webforj.component.button.Button;
@@ -13,35 +12,16 @@ import com.webforj.environment.namespace.PrivateNamespace;
 import com.webforj.environment.namespace.exception.NamespaceLockedException;
 
 import com.webforj.component.Composite;
-import com.webforj.component.layout.flexlayout.FlexAlignment;
 import com.webforj.component.layout.flexlayout.FlexLayout;
 import com.webforj.howdy.util.NicknameGenerator;
 import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Route(value = "/you", outlet = MainLayout.class)
 @FrameTitle("You")
 public class YouView extends Composite<FlexLayout> {
-
-  private static final List<String> MOODS = List.of(
-    "Happy 😊",
-    "Enthusiastic 👍",
-    "Grateful 🙏",
-    "Inspired 💡",
-    "Confident 💪",
-    "Relaxed 😌",
-    "Joyful 😄",
-    "Proud 🏆",
-    "Optimistic 🌈",
-    "Playful 😜",
-    "Loved ❤️",
-    "Excited 🎉"
-);
-
-private static final String FONT_SIZE_LARGE = "larger";
 
   /**
    * Represents the current instance of the layout bound to the view.
@@ -141,18 +121,18 @@ private static final String FONT_SIZE_LARGE = "larger";
    * set of predefined moods for use throughout the application.
    */
   private static final List<String> AVAILABLE_MOODS = List.of(
-    "Happy 😊",
-    "Enthusiastic 👍",
-    "Grateful 🙏",
-    "Inspired 💡",
-    "Confident 💪",
-    "Relaxed 😌",
-    "Joyful 😄",
-    "Proud 🏆",
-    "Optimistic 🌈",
-    "Playful 😜",
-    "Loved ❤️",
-    "Excited 🎉"
+    "😊 Happy",
+    "👍 Enthusiastic",
+    "🙏 Grateful",
+    "💡 Inspired",
+    "💪 Confident",
+    "😌 Relaxed",
+    "😄 Joyful",
+    "🏆 Proud",
+    "🌈 Optimistic",
+    "😜 Playful",
+    "❤️ Loved",
+    "🎉 Excited"
   );
 
   /**
@@ -184,9 +164,8 @@ private static final String FONT_SIZE_LARGE = "larger";
    * initialized for interaction and use.
    */
   public YouView() {
-
-    self.setHeight("100%");
-    self.setAlignment(FlexAlignment.CENTER);
+    self.setMaxWidth("320px");
+    self.setStyle("margin", "var(--dwc-space-m) auto");
     self.setDirection(FlexDirection.COLUMN);
 
     initializeMoodSelector();
@@ -246,7 +225,7 @@ private static final String FONT_SIZE_LARGE = "larger";
 
         Nickname.setEnabled(false);
 
-        Toast.show("You shared your mood, "+nickname,1200,Theme.SUCCESS);
+        Toast.show("You shared your mood, "+nickname,1200,Theme.SUCCESS, Toast.Placement.TOP_RIGHT);
 
       }
   }
@@ -279,8 +258,8 @@ private static final String FONT_SIZE_LARGE = "larger";
           return false;
         }
     }
-   this.nickname = nick;
-   return true;
-  }
 
+    this.nickname = nick;
+    return true;
+  }
 }

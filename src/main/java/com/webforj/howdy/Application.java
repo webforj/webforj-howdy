@@ -2,15 +2,12 @@ package com.webforj.howdy;
 
 import com.webforj.App;
 import com.webforj.annotation.AppProfile;
-import com.webforj.annotation.AppTheme;
+import com.webforj.annotation.JavaScript;
 import com.webforj.annotation.Routify;
 import com.webforj.annotation.StyleSheet;
 
 @Routify(packages = "com.webforj.howdy.views")
 @StyleSheet("ws://app.css")
-@AppTheme("system")
+// @JavaScript("ws://app.js")
 @AppProfile(name = "Howdy", shortName = "Howdy")
-public class Application extends App {
-
-
-}
+public class Application extends App {}
