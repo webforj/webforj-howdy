@@ -34,6 +34,15 @@ mvn verify
 # The project uses Playwright for browser testing
 ```
 
+### Documentation
+```bash
+# Generate Javadoc
+mvn javadoc:javadoc
+
+# Generate Javadoc JAR
+mvn javadoc:jar
+```
+
 ## Architecture
 
 ### Application Structure

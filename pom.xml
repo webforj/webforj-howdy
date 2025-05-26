@@ -22,7 +22,7 @@
       (with 1 second timeout) when new classes are compiled.
       Should be disabled when using a live reload system, such as JRebel.
       -->
-    <jetty.scan>1</jetty.scan>
+    <jetty.scan>0</jetty.scan>
     <jetty.port>8080</jetty.port>
     <jetty.stopPort>9966</jetty.stopPort>
   </properties>
@@ -176,6 +176,60 @@
             </configuration>
             <goals>
               <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Javadoc generation plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <!-- General configuration -->
+          <doclint>all,-missing</doclint>
+          <source>${maven.compiler.source}</source>
+          <show>public</show>
+          <nohelp>true</nohelp>
+          <detectJavaApiLink>true</detectJavaApiLink>
+          
+          <!-- Customize output -->
+          <windowTitle>Howdy webforJ Application API ${project.version}</windowTitle>
+          <doctitle>Howdy webforJ Application API ${project.version}</doctitle>
+          <bottom>
+            <![CDATA[
+              Copyright &#169; {currentYear} webforJ Team. All rights reserved.<br>
+              Built with <a href="https://webforj.com">webforJ</a> framework.
+            ]]>
+          </bottom>
+          
+          <!-- Include author and since tags -->
+          <author>true</author>
+          <use>true</use>
+          <version>true</version>
+          
+          <!-- Links to external documentation -->
+          <links>
+            <link>https://docs.webforj.com/javadoc/</link>
+          </links>
+          
+          <!-- Exclude test packages -->
+          <excludePackageNames>*.test.*:*.tests.*</excludePackageNames>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>aggregate</id>
+            <phase>site</phase>
+            <goals>
+              <goal>aggregate</goal>
             </goals>
           </execution>
         </executions>

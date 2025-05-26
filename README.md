@@ -175,7 +175,18 @@ mvn clean package -Pprod
 
 # Run tests
 mvn verify
+
+# Generate Javadoc documentation
+mvn javadoc:javadoc
+
+# Generate Javadoc and package as JAR
+mvn javadoc:jar
+
+# Generate aggregated Javadoc (for multi-module projects)
+mvn javadoc:aggregate
 ```
+
+The generated Javadoc will be available in `target/site/apidocs/`.
 
 ## 🎯 Best Practices
 
