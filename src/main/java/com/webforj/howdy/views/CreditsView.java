@@ -13,12 +13,44 @@ import com.webforj.component.layout.flexlayout.FlexLayout;
 import com.webforj.router.annotation.FrameTitle;
 import com.webforj.router.annotation.Route;
 
+/**
+ * View component displaying information about webforJ framework.
+ * 
+ * This view serves as an educational showcase that:
+ * <ul>
+ *   <li>Highlights key features and benefits of webforJ</li>
+ *   <li>Provides links to documentation and resources</li>
+ *   <li>Demonstrates various UI components and styling techniques</li>
+ * </ul>
+ * 
+ * The Credits view exemplifies webforJ's capabilities for creating
+ * rich, informative content pages with interactive elements.
+ * 
+ * @author webforJ Team
+ * @since 1.0
+ */
 @Route(value = "/credits", outlet = MainLayout.class)
 @FrameTitle("Credits")
 public class CreditsView extends Composite<FlexLayout> {
 
+  /** The root FlexLayout component bound to this composite */
   private FlexLayout self = getBoundComponent();
 
+  /**
+   * Constructs the Credits view with webforJ framework information.
+   * 
+   * Creates a visually appealing layout featuring:
+   * <ul>
+   *   <li>Framework description and overview</li>
+   *   <li>Feature highlights with emoji icons</li>
+   *   <li>Call-to-action buttons for learning resources</li>
+   *   <li>Version information display</li>
+   * </ul>
+   * 
+   * The view uses FlexLayout for responsive design and demonstrates
+   * various styling techniques including CSS variables, HTML content
+   * in paragraphs, and button theming.
+   */
   public CreditsView() {
     self.setDirection(FlexDirection.COLUMN);
     self.setAlignment(FlexAlignment.CENTER);

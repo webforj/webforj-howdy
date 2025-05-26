@@ -46,12 +46,34 @@ import com.webforj.router.observer.DidEnterObserver;
  */
 @Route
 public class MainLayout extends Composite<AppLayout> implements DidEnterObserver {
+  /** Default view to navigate to when no specific route is provided */
   private static final String DEFAULT_VIEW = "dashboard";
+  
+  /** The root AppLayout component bound to this composite */
   private AppLayout self = getBoundComponent();
+  
+  /** Bottom navigation tabbed pane for switching between views */
   private TabbedPane nav = new TabbedPane();
+  
+  /** Dynamic title display in the header that updates based on current view */
   private H1 title = new H1();
+  
+  /** Registration handle for tab selection listener, used for cleanup */
   private ListenerRegistration<TabSelectEvent> registration;
 
+  /**
+   * Constructs the main layout for the application.
+   * 
+   * Initializes the application's primary layout structure including:
+   * <ul>
+   *   <li>Header with dynamic title display</li>
+   *   <li>Bottom navigation with tabbed interface</li>
+   *   <li>Navigation event handling for route changes</li>
+   * </ul>
+   * 
+   * The layout automatically responds to navigation events to update
+   * the title and selected tab based on the current route.
+   */
   public MainLayout() {
     setHeader();
     setNav();
