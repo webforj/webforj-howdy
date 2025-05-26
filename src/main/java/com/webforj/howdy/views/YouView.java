@@ -79,7 +79,7 @@ public class YouView extends Composite<FlexLayout> {
    * express their current emotional state effectively. It can be used in combination
    * with other form elements to collect and process user input.
    */
-  ListBox myMoodSelection = new ListBox("My Mood:");
+  ListBox myMoodSelection = new ListBox("How are you?");
 
   /**
    * Represents a button labeled "Submit" in the context of the `YouView` class.
@@ -93,7 +93,7 @@ public class YouView extends Composite<FlexLayout> {
    * - Contains the label "Submit" for user interaction.
    * - Can be integrated with event-handling mechanisms for click actions.
    */
-  Button submitButton = new Button("Submit");
+  Button submitButton = new Button("Tell us how you feel!");
 
   /**
    * Represents the nickname of a user retrieved from the current page's attributes.

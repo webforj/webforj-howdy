@@ -120,6 +120,7 @@ public class MainLayout extends Composite<AppLayout> implements DidEnterObserver
     nav.addTab(new Tab("You", TablerIcon.create("user")));
     nav.addTab(new Tab("Dashboard", TablerIcon.create("dashboard")));
     nav.addTab(new Tab("Users", TablerIcon.create("users")));
+    nav.addTab(new Tab("Credits", TablerIcon.create("info-circle")));
 
 
     self.addToFooter(nav);

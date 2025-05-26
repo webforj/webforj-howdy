@@ -97,6 +97,14 @@ public class DashboardView extends Composite<FlexLayout> {
    */
   GoogleChart chart = new GoogleChart(GoogleChart.Type.BAR);
 
+  /**
+   * Represents a pie chart component displayed in the `DashboardView`.
+   *
+   * This chart provides an alternative visualization of user mood distributions
+   * as a pie chart, complementing the bar chart representation.
+   */
+  GoogleChart pieChart = new GoogleChart(GoogleChart.Type.PIE);
+
   NoData noData = new NoData();
 
   /**
@@ -144,15 +152,31 @@ public class DashboardView extends Composite<FlexLayout> {
     self.setDirection(FlexDirection.COLUMN);
     self.setJustifyContent(FlexJustifyContent.CENTER);
 
-    Map<String, Object> options = new HashMap<>();
-    options.put("title", "The Mood of our Users.");
-    options.put("is3D", "true");
-
-    chart.setOptions(options);
+    // Configure bar chart
+    Map<String, Object> barOptions = new HashMap<>();
+    barOptions.put("title", "Mood Distribution - Bar Chart");
+    barOptions.put("is3D", "true");
+    chart.setOptions(barOptions);
     chart.setStyle("width","80%");
     chart.setStyle("display","none");
 
-    self.add(noData,chart);
+    // Configure pie chart
+    Map<String, Object> pieOptions = new HashMap<>();
+    pieOptions.put("title", "Mood Distribution - Pie Chart");
+    pieOptions.put("is3D", "true");
+    pieChart.setOptions(pieOptions);
+    pieChart.setStyle("width","80%");
+    pieChart.setStyle("display","none");
+
+    // Create vertical layout for charts
+    FlexLayout chartsContainer = new FlexLayout();
+    chartsContainer.setDirection(FlexDirection.COLUMN);
+    chartsContainer.setAlignment(FlexAlignment.CENTER);
+    chartsContainer.setStyle("gap", "2rem");
+    chartsContainer.setStyle("width", "100%");
+    chartsContainer.add(chart, pieChart);
+
+    self.add(noData, chartsContainer);
 
     this.eventListenerReg = model.onChange(this::updateData);
     updateData(null);
@@ -185,9 +209,13 @@ public class DashboardView extends Composite<FlexLayout> {
     moodCounts.forEach((mood, count) ->
       data.add(Arrays.asList(mood, count))
     );
+    
+    // Set data for both charts
     chart.setData(data);
+    pieChart.setData(data);
 
     noData.setVisible(moodCounts.isEmpty());
     chart.setStyle("display",moodCounts.isEmpty()?"none":"block");
+    pieChart.setStyle("display",moodCounts.isEmpty()?"none":"block");
   }
 }
