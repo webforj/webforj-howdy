@@ -1,4 +1,8 @@
-# Howdy Application
+# ⚠️ This project has moved to a new home! ⚠️
+
+**This project has moved to our gallery of projects built with webforJ. You can find [the code for this and other demos here.](https://github.com/webforj/built-with-webforj/tree/main/webforj-howdy)**
+
+## Howdy Application
 
 The Howdy application is a web-based demonstration project built with WebforJ framework. It showcases how to create a
 modern web application using Java, featuring a responsive user interface, Google Charts integration, and built-in
